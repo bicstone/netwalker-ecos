@@ -1,0 +1,105 @@
+# ====================================================================
+#
+#      mc9s08dz.cdl
+#
+#      A PMIC package for i.MX35 3stack.
+#
+# ====================================================================
+#####ECOSGPLCOPYRIGHTBEGIN####
+## -------------------------------------------
+## This file is part of eCos, the Embedded Configurable Operating System.
+## Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004 Red Hat, Inc.
+## Copyright (C) 2004 eCosCentric, Ltd
+##
+## eCos is free software; you can redistribute it and/or modify it under
+## the terms of the GNU General Public License as published by the Free
+## Software Foundation; either version 2 or (at your option) any later version.
+##
+## eCos is distributed in the hope that it will be useful, but WITHOUT ANY
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or
+## FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+## for more details.
+##
+## You should have received a copy of the GNU General Public License along
+## with eCos; if not, write to the Free Software Foundation, Inc.,
+## 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+##
+## As a special exception, if other files instantiate templates or use macros
+## or inline functions from this file, or you compile this file and link it
+## with other works to produce a work based on this file, this file does not
+## by itself cause the resulting work to be covered by the GNU General Public
+## License. However the source code for this file must still be made available
+## in accordance with section (3) of the GNU General Public License.
+##
+## This exception does not invalidate any other reasons why a work based on
+## this file might be covered by the GNU General Public License.
+##
+## -------------------------------------------
+#####ECOSGPLCOPYRIGHTEND####
+# ====================================================================
+######DESCRIPTIONBEGIN####
+#
+# Author(s):     Fred Fan 
+# Contributors:
+# Date:           2008-05-08
+#
+#####DESCRIPTIONEND####
+# ====================================================================
+
+cdl_package CYGPKG_DEVS_PMIC_ARM_IMX35_3STACK {
+    display     "PMIC driver for i.MX35 3stack platforms"
+
+    compile     -library=libextras.a mc9s08dz.c
+    
+    include_dir   cyg/io
+
+    define_proc {
+        puts $::cdl_header "#include <pkgconf/system.h>";
+    }
+
+    cdl_option CYGHWR_DEVS_PMIC_SPI {
+	display "Support SPI interface to PMIC"
+	default_value 0
+	active_if CYGPKG_DEVS_MXC_SPI
+
+	description "
+		When this option is enabled, it enables spi interface
+		to access pmic device on the i.MX35 3stack platform"
+	define_proc {
+		puts $::cdl_system_header "#define MXC_PMIC_SPI_ENABLED"
+	}
+    }
+    
+    cdl_option CYGHWR_DEVS_PMIC_SPI_PORT {
+	display "SPI interface number to PMIC"
+	flavor  data
+	default_value 0
+	active_if CYGHWR_DEVS_PMIC_SPI
+    }
+
+    cdl_option  CYGHWR_DEVS_PMIC_I2C {
+	display "Support I2C interface to PMIC"
+	default_value 0
+	active_if CYGPKG_DEVS_MXC_I2C
+	description "
+		When this option is enabled, it enables i2c interface
+		to access pmic device on the i.MX35 3stack platform"
+	define_proc {
+		puts $::cdl_system_header "#define MXC_PMIC_I2C_ENABLED"
+	}
+    }
+
+    cdl_option CYGHWR_DEVS_PMIC_I2C_PORT {
+	display "I2C interface number to PMIC"
+	flavor  data
+	default_value 0
+	active_if CYGHWR_DEVS_PMIC_I2C
+    }
+
+    cdl_option CYGHWR_DEVS_PMIC_I2C_ADDR {
+	display "I2C addess of PMIC"
+	flavor  data
+	default_value 0
+	active_if CYGHWR_DEVS_PMIC_I2C
+    }
+}

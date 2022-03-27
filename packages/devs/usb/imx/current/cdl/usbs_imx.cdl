@@ -1,0 +1,107 @@
+# ====================================================================
+#
+#      usbs_mx37.cdl
+#
+#      MX37 USB OTG Device Mode support.
+#
+# ====================================================================
+#####ECOSGPLCOPYRIGHTBEGIN####
+## -------------------------------------------
+# This file is a part of Diagnosis Package based on eCos for Freescale i.MX 
+# Family microprocessor.
+## Copyright (C) 2008 Freescale Semiconductor, Inc.
+##
+## eCos is free software; you can redistribute it and/or modify it under
+## the terms of the GNU General Public License as published by the Free
+## Software Foundation; either version 2 or (at your option) any later version.
+##
+## eCos is distributed in the hope that it will be useful, but WITHOUT ANY
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or
+## FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+## for more details.
+##
+## You should have received a copy of the GNU General Public License along
+## with eCos; if not, write to the Free Software Foundation, Inc.,
+## 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+##
+## As a special exception, if other files instantiate templates or use macros
+## or inline functions from this file, or you compile this file and link it
+## with other works to produce a work based on this file, this file does not
+## by itself cause the resulting work to be covered by the GNU General Public
+## License. However the source code for this file must still be made available
+## in accordance with section (3) of the GNU General Public License.
+##
+## This exception does not invalidate any other reasons why a work based on
+## this file might be covered by the GNU General Public License.
+##
+## Alternative licenses for eCos may be arranged by contacting Red Hat, Inc.
+## at http://sources.redhat.com/ecos/ecos-license/
+## -------------------------------------------
+#####ECOSGPLCOPYRIGHTEND####
+# ====================================================================
+######DESCRIPTIONBEGIN####
+#
+# Author(s):      fisherz
+# Original data:  fisherz
+# Contributors:
+# Date:           2008-10-16
+# Comment:        Porting to MX51
+#
+#####DESCRIPTIONEND####
+# ====================================================================
+cdl_package CYGPKG_DEVS_USB_IMX_OTG {
+    display     "Freescale i.MX51 or i.MX37 USB OTG Device Driver"
+    include_dir "cyg/io/usb"
+    parent      CYGPKG_USB
+    implements  CYGHWR_IO_USB_SLAVE
+
+    # Make sure that we are running on the right hardware.
+    requires CYGPKG_HAL_ARM
+#   requires CYGPKG_HAL_ARM_MX51
+#   requires CYGPKG_HAL_ARM_MX51_3STACK
+	requires CYGPKG_IO_USB
+	requires CYGPKG_IO_USB_SLAVE
+	compile  usbs_imx.c
+    
+    description "
+        The on-chip USB OTG core on the MX51 or MX37 works as a USB
+        device controller, facilitating the use of this processor
+        in USB peripherals. This package provides a suitable eCos
+        device driver."
+
+    cdl_option CYGHWR_USB_DEVS_MX51_OTG {
+        display       "i.MX51 USB OTG"
+        flavor        bool
+        default_value 0
+        description "
+        i.MX51 is the default OTG device for this package"
+     }
+
+     cdl_option CYGHWR_USB_DEVS_MX37_OTG {
+        display       "i.MX37 USB OTG"
+        flavor        bool
+        default_value 0
+        description "
+        i.MX37 is not the default OTG device for this package"
+     }
+
+    cdl_option CYGHWR_MXC_USB_BUFFER_USE_IRAM {
+        display       "Determine where the USB buffer is"
+        flavor        bool
+        default_value 1
+        description "
+        USB buffer is defaultly in the internal RAM for better performance"
+     }
+
+    cdl_option CYGHWR_IMX_USB_DOWNLOAD_SUPPORT {
+        display       "USB Download for redboot is supported, i.MX OTG works in poll mode"
+        flavor        bool
+        default_value 0
+        description "
+        USB Download function is an add-value function for redboot, and USB OTG will work
+        under poll mode"
+     }
+
+}
+    
+    
